@@ -9,15 +9,18 @@ Gestión de medicación:
 Configuración de recordatorios de medicamentos.
 Registro de las dosis tomadas.
 Notificaciones para recordar la toma de medicamentos.
+
 Registro de visitas:
 
 Programación de visitas a centros médicos.
 Visualización de un calendario con las próximas visitas programadas.
 Notificaciones para recordar las visitas programadas.
+
 Contactos favoritos:
 
 Listado de contactos importantes para la persona mayor.
 Facilidad para llamar o enviar mensajes a los contactos directamente desde la aplicación.
+
 Interfaz intuitiva:
 
 Diseño moderno y fácil de usar, adaptado para personas mayores.
