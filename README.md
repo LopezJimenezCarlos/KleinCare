@@ -1,6 +1,5 @@
 KleinCare
 
-Descripción
 KleinCare es una aplicación móvil diseñada para facilitar el cuidado de personas mayores. Permite a los cuidadores o familiares configurar y monitorear la medicación, las visitas y los contactos favoritos de sus seres queridos mayores. La aplicación está desarrollada utilizando Jetpack Compose, lo que garantiza una experiencia de usuario moderna y fluida.
 
 Características
