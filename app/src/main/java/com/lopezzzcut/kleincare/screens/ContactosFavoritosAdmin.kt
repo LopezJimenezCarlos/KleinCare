@@ -681,7 +681,7 @@ fun EditarNúmero(nombre: MutableState<String>,
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "Editar Cita",
+                        text = "Editar Contacto",
                         fontFamily = Poppins,
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Normal,
