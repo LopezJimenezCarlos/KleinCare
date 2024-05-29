@@ -93,25 +93,25 @@ fun BottomBar2(navController: NavController) {
             BottomBarBoton(
                 icono =  if (currentRoute == AppScreens.inicioAdmin.route) R.drawable.homeiconfilled else R.drawable.homeicon,
                 navController = navController,
-                ruta = AppScreens.Inicio.route,
+                ruta = AppScreens.inicioAdmin.route,
                 modifier = Modifier.weight(1f),
             )
             BottomBarBoton(
                 icono =  if (currentRoute == AppScreens.pastillasAdmin.route) R.drawable.pilliconfilled else R.drawable.pillicon,
                 navController = navController,
-                ruta = AppScreens.Pastillas.route,
+                ruta = AppScreens.pastillasAdmin.route,
                 modifier = Modifier.weight(1f),
             )
             BottomBarBoton(
-                icono =  if (currentRoute == AppScreens.citas.route) R.drawable.citasiconfilled else R.drawable.citasicon,
+                icono =  if (currentRoute == AppScreens.visitasAdmin.route) R.drawable.citasiconfilled else R.drawable.citasicon,
                 navController = navController,
-                ruta = AppScreens.citas.route,
+                ruta = AppScreens.visitasAdmin.route,
                 modifier = Modifier.weight(1f),
             )
             BottomBarBoton(
-                icono =  if (currentRoute == AppScreens.contactos.route) R.drawable.contacticonfilled else R.drawable.contacticon,
+                icono =  if (currentRoute == AppScreens.contactosAdmin.route) R.drawable.contacticonfilled else R.drawable.contacticon,
                 navController = navController,
-                ruta = AppScreens.contactos.route,
+                ruta = AppScreens.contactosAdmin.route,
                 modifier = Modifier.weight(1f),
             )
         }

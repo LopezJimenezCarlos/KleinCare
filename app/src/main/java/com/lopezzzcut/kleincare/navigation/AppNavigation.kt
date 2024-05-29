@@ -10,11 +10,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
 import com.lopezzzcut.kleincare.screens.ContactosFavoritos
+import com.lopezzzcut.kleincare.screens.ContactosFavoritosAdmin
 import com.lopezzzcut.kleincare.screens.Inicio
 import com.lopezzzcut.kleincare.screens.InicioAdmin
 import com.lopezzzcut.kleincare.screens.Pastillas
 import com.lopezzzcut.kleincare.screens.PastillasAdmin
 import com.lopezzzcut.kleincare.screens.Visitas
+import com.lopezzzcut.kleincare.screens.VisitasAdmin
 import com.lopezzzcut.kleincare.screens.Welcome
 import com.lopezzzcut.kleincare.screens.splash
 import com.lopezzzcut.kleincare.screens.splashscreen
@@ -49,6 +51,12 @@ fun AppNavigation() {
         }
         composable(AppScreens.pastillasAdmin.route) {
             PastillasAdmin(navController = navController, context = LocalContext.current)
+        }
+        composable(AppScreens.visitasAdmin.route) {
+            VisitasAdmin(navController = navController, context = LocalContext.current)
+        }
+        composable(AppScreens.contactosAdmin.route) {
+            ContactosFavoritosAdmin(navController = navController, context = LocalContext.current)
         }
 
     }

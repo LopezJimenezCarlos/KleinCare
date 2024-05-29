@@ -177,6 +177,8 @@ data class Numero(
     val imagen: Int
 )
 
+
+
 fun getContactos(): List<Numero> {
     return listOf(
         Numero("Maria Jose", "123456789", R.drawable.personajoven1),
@@ -185,6 +187,7 @@ fun getContactos(): List<Numero> {
         // Añade más contactos aquí
     )
 }
+
 
 @Composable
 fun ContactoCard(nombre: String, telefono: String, imagen: Int,context: Context) {

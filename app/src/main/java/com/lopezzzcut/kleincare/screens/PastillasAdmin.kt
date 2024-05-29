@@ -59,6 +59,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -279,7 +280,8 @@ fun ColumnaPastillas2Admin() {
     Column(modifier = Modifier.padding(8.dp)) {
         pastillas.forEachIndexed { index, pastillas ->
             cardPastillaAdmin(
-               pastillas
+               pastillas,
+                mutableStateOf(true)
 
                 )
         }
@@ -297,6 +299,7 @@ fun ColumnaPastillas1Admin() {
         pastillas.forEachIndexed { index,pastillas ->
             cardPastillaAdmin(
                 pastillas = pastillas
+                ,mutableStateOf(false)
                 )
         }
     }
@@ -304,12 +307,13 @@ fun ColumnaPastillas1Admin() {
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun cardPastillaAdmin(pastillas: Triple<Int, String, String>){
+fun cardPastillaAdmin(pastillas: Triple<Int, String, String>,tomada:MutableState<Boolean>){
     val imagen = mutableStateOf(pastillas.first)
     val pastilla =mutableStateOf( pastillas.second)
     val descripcion = mutableStateOf(pastillas.third)
     var checked =  remember { mutableStateOf(false) }
     val colorBoton = if (checked.value) Color(0xffffc061) else Color.White
+    val borde = if (tomada.value)  BorderStroke(1.dp, Color(0xff8ACB88))  else BorderStroke(1.dp, Color(0xffE17C7C))
     val colorTarjeta =
         when (pastilla.value) {
             "Ibuprofeno" -> Color(0xffe6f6ec)
@@ -334,6 +338,7 @@ fun cardPastillaAdmin(pastillas: Triple<Int, String, String>){
             containerColor = colorTarjeta,
             contentColor = Color.Black
         ),
+        border = borde,
         modifier = Modifier
             .height(120.dp)
             .fillMaxWidth()
@@ -417,6 +422,7 @@ fun AñadirPastilla(nombrePastilla: MutableState<String>, cantidadPastilla: Muta
             onDismissRequest = { /*TODO*/ },
             confirmButton = { /*TODO*/ },
             shape = RoundedCornerShape(16.dp),
+
             title = {
                 var confirmar by remember { mutableStateOf(true) }
                 if (confirmar) {
@@ -431,7 +437,15 @@ fun AñadirPastilla(nombrePastilla: MutableState<String>, cantidadPastilla: Muta
                             modifier = Modifier.padding(16.dp)
                         )
                         OutlinedTextField(
+
                             value = nombrePastilla.value ,
+                            textStyle = TextStyle(
+                                fontFamily = Poppins,
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Normal,
+                                color = Color.Black,
+                                textAlign = TextAlign.Start,
+                            ),
                             onValueChange = { nombrePastilla.value  = it},
                             placeholder = {
                                 Text(
@@ -451,6 +465,13 @@ fun AñadirPastilla(nombrePastilla: MutableState<String>, cantidadPastilla: Muta
                             )
                         OutlinedTextField(
                             value = cantidadPastilla.value ,
+                            textStyle = TextStyle(
+                                fontFamily = Poppins,
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Normal,
+                                color = Color.Black,
+                                textAlign = TextAlign.Start,
+                            ),
                             onValueChange = { cantidadPastilla.value  = it},
                             placeholder = {
                                 Text(
@@ -472,6 +493,13 @@ fun AñadirPastilla(nombrePastilla: MutableState<String>, cantidadPastilla: Muta
                         OutlinedTextField(
                             value = "",
                             onValueChange = { },
+                            textStyle = TextStyle(
+                                fontFamily = Poppins,
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Normal,
+                                color = Color.Black,
+                                textAlign = TextAlign.Start,
+                            ),
                             placeholder = {
                                 Text(
                                     "Imagen", fontFamily = Poppins,
@@ -626,7 +654,15 @@ fun EditarPastilla(nombrePastilla: MutableState<String>, frecuenciaPastilla: Mut
                         textAlign = TextAlign.Start,
                         modifier = Modifier.padding(16.dp)
                     )
+
                     OutlinedTextField(
+                        textStyle = TextStyle(
+                            fontFamily = Poppins,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Normal,
+                            color = Color.Black,
+                            textAlign = TextAlign.Start,
+                        ),
                         value = nombrePastilla.value ,
                         onValueChange = { nombrePastilla.value  = it},
                         placeholder = {
@@ -646,6 +682,13 @@ fun EditarPastilla(nombrePastilla: MutableState<String>, frecuenciaPastilla: Mut
 
                         )
                     OutlinedTextField(
+                        textStyle = TextStyle(
+                            fontFamily = Poppins,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Normal,
+                            color = Color.Black,
+                            textAlign = TextAlign.Start,
+                        ),
                         value = frecuenciaPastilla.value ,
                         onValueChange = { frecuenciaPastilla.value  = it},
                         placeholder = {
@@ -664,29 +707,17 @@ fun EditarPastilla(nombrePastilla: MutableState<String>, frecuenciaPastilla: Mut
                             .padding(8.dp),
 
                         )
-                    OutlinedTextField(
-                        value = frecuenciaPastilla.value ,
-                        onValueChange = { frecuenciaPastilla.value  = it },
-                        placeholder = {
-                            Text(
-                                "Frecuencia", fontFamily = Poppins,
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.Normal,
-                                color = Color.Black,
-                                textAlign = TextAlign.Start,
-                                modifier = Modifier.padding(8.dp)
-                            )
-                        },
-                        shape = RoundedCornerShape(16.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp),
 
-
-                        )
                     OutlinedTextField(
                         value = "",
                         onValueChange = { },
+                        textStyle = TextStyle(
+                            fontFamily = Poppins,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Normal,
+                            color = Color.Black,
+                            textAlign = TextAlign.Start,
+                        ),
                         placeholder = {
                             Text(
                                 "Imagen", fontFamily = Poppins,

@@ -139,7 +139,7 @@ fun welcomecontent(navController: NavController){
                         )
                         
                     }
-                    Button(onClick = { navController.navigate(AppScreens.Inicio.route) },
+                    Button(onClick = { navController.navigate(AppScreens.inicioAdmin.route) },
                         modifier = Modifier.fillMaxWidth().padding(start = 32.dp, end = 32.dp,top = 8.dp, bottom = 8.dp).height(70.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.Black,

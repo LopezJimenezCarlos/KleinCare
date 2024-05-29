@@ -165,7 +165,7 @@ fun iniciocontent(navController: NavController){
 
 @Composable
 fun MediacionCard(navController: NavController,medicacion:Boolean){
-    val texto = if (medicacion) "Se ha tomado la medicación" else "Tomate la mediacion"
+    val texto = if (medicacion) "Todo en orden" else "Tomate la mediacion"
     val texto2 = if (medicacion) "Pulsa para ver \nlo que ha tomado" else "Pulsa para ver\n que debes tomar."
     val imagen = if (medicacion) R.drawable.tickverde else R.drawable.alertyellow
     val color = if (medicacion) Color(0xff82B680) else Color(0xffF06A6A)
