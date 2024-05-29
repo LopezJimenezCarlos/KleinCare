@@ -121,7 +121,7 @@ fun iniciocontent(navController: NavController){
 
         }
         Spacer(modifier = Modifier.height(16.dp))
-        MediacionCard(navController)
+        MediacionCard(navController,medicacion = false)
         Spacer(modifier = Modifier.height(4.dp))
 
         Text(
@@ -164,10 +164,14 @@ fun iniciocontent(navController: NavController){
 }
 
 @Composable
-fun MediacionCard(navController: NavController){
+fun MediacionCard(navController: NavController,medicacion:Boolean){
+    val texto = if (medicacion) "Se ha tomado la medicación" else "Tomate la mediacion"
+    val texto2 = if (medicacion) "Pulsa para ver \nlo que ha tomado" else "Pulsa para ver\n que debes tomar."
+    val imagen = if (medicacion) R.drawable.tickverde else R.drawable.alertyellow
+    val color = if (medicacion) Color(0xff82B680) else Color(0xffF06A6A)
     Card (shape = RoundedCornerShape(16.dp),
         colors= CardDefaults.cardColors(
-            containerColor = Color(0xffF06A6A),
+            containerColor = color,
             contentColor = Color.Black
         ),
         modifier = Modifier
@@ -176,7 +180,7 @@ fun MediacionCard(navController: NavController){
             .padding(8.dp)){
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween,modifier = Modifier.fillMaxWidth()) {
             Text(
-                text = "¡Tómate la medicacion!",
+                text = texto,
                 fontFamily = Poppins,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Normal,
@@ -187,29 +191,29 @@ fun MediacionCard(navController: NavController){
 
             )
             Image(
-                painter = painterResource(id = R.drawable.alertyellow), contentDescription = "",
+                painter = painterResource(id = imagen), contentDescription = "",
                 modifier = Modifier
                     .padding(8.dp, end = 16.dp)
                     .size(40.dp),
             )
         }
-        Row(modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween){
+        Row(modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp,Alignment.Start)){
             Column (verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = "Dale al botón para ver\n" +
-                            "que debes tomar",
+                    text = texto2,
                     fontFamily = Poppins,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Normal,
                     color = Color.White,
                     textAlign = TextAlign.Start,
                     modifier = Modifier
-                        .padding(16.dp)
+                        .padding(16.dp),
+
 
                 )
 
             }
-            Column (verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+            Column (verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.End,modifier = Modifier.weight(1f)) {
 
                 Spacer(modifier = Modifier.weight(1f))
                 Button(onClick = { navController.navigate(AppScreens.Pastillas.route)},modifier = Modifier.padding(end= 8.dp,bottom = 24.dp),

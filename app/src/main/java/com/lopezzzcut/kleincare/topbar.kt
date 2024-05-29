@@ -105,6 +105,71 @@ fun TopBar(navController:NavController,name:String) {
         }
     )
 }
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopBar3(navController:NavController,name:String) {
+
+    TopAppBar(
+        colors = TopAppBarDefaults.largeTopAppBarColors(
+            containerColor = Color.Transparent,
+        ),
+        modifier = Modifier.padding(16.dp),
+
+        title = {
+            Column(modifier = Modifier.fillMaxHeight(),
+                verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.Start){
+                Text(
+                    text = "Esta ayudando a,",
+                    fontFamily = Poppins,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = Color.Black,
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier.padding(end= 6.dp)
+
+
+                )
+                Text(
+                    text = name,
+                    fontFamily = Poppins,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = Color(0xff292929),
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier.padding(end= 6.dp)
+
+
+                )
+            }
+
+        },
+        actions = {
+
+
+            IconButton(
+                onClick = {
+                    navController.navigate(AppScreens.Inicio.route)
+                },
+                modifier = Modifier
+                    .padding(start = 4.dp, end = 8.dp)
+                    .size(60.dp)
+                    .clip(CircleShape),
+            ) {
+
+                Image(
+                    painter = painterResource(R.drawable.senormayor),
+                    contentDescription = "Imagen seleccionada",
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(CircleShape),
+                    contentScale = ContentScale.Crop
+                )
+            }
+
+        }
+    )
+}
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

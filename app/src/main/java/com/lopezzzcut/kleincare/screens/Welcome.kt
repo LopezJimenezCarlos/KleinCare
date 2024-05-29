@@ -120,18 +120,17 @@ fun welcomecontent(navController: NavController){
                             .fillMaxWidth()
                             .padding(start = 34.dp)
                     )
-                    Spacer(modifier = Modifier.weight(1f))
                     Button(onClick = { navController.navigate(AppScreens.Inicio.route) },
-                        modifier = Modifier.fillMaxWidth().padding(32.dp).height(70.dp),
+                        modifier = Modifier.fillMaxWidth().padding(start = 32.dp, end = 32.dp,top = 8.dp, bottom = 8.dp).height(70.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.Black,
                             contentColor = Color.Black),
                         shape = RoundedCornerShape(16.dp)){
                         Text(
-                            text = "Comenzar",
+                            text = "Soy el usuario principal",
                             fontFamily = Poppins,
                             fontWeight = FontWeight.Normal,
-                            fontSize = 28.sp,
+                            fontSize = 24.sp,
                             color = Color.White,
                             textAlign = TextAlign.Center,
                             modifier = Modifier
@@ -139,6 +138,25 @@ fun welcomecontent(navController: NavController){
 
                         )
                         
+                    }
+                    Button(onClick = { navController.navigate(AppScreens.Inicio.route) },
+                        modifier = Modifier.fillMaxWidth().padding(start = 32.dp, end = 32.dp,top = 8.dp, bottom = 8.dp).height(70.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Black,
+                            contentColor = Color.Black),
+                        shape = RoundedCornerShape(16.dp)){
+                        Text(
+                            text = "Soy el cuidador",
+                            fontFamily = Poppins,
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 24.sp,
+                            color = Color.White,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+
+                        )
+
                     }
                 }
             }

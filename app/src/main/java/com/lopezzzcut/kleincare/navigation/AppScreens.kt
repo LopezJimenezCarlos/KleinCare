@@ -11,4 +11,6 @@ sealed class AppScreens(val route: String) {
     object Pastillas: AppScreens("pastillas")
     object citas: AppScreens("citas")
     object contactos: AppScreens("contactos")
+    object inicioAdmin: AppScreens("inicioAdmin")
+    object pastillasAdmin: AppScreens("pastillasAdmin")
 }

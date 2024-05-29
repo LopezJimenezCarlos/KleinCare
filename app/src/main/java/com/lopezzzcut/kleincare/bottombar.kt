@@ -76,6 +76,48 @@ fun BottomBar(navController: NavController) {
         }
     }
 }
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun BottomBar2(navController: NavController) {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route ?: ""
+    val shape = RoundedCornerShape(24.dp)
+    NavigationBar(tonalElevation = 12.dp,containerColor = Color.White,
+        modifier = Modifier.clip(shape).width(360.dp)) {
+        Row(
+            modifier = Modifier.fillMaxSize(),
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
+            BottomBarBoton(
+                icono =  if (currentRoute == AppScreens.inicioAdmin.route) R.drawable.homeiconfilled else R.drawable.homeicon,
+                navController = navController,
+                ruta = AppScreens.Inicio.route,
+                modifier = Modifier.weight(1f),
+            )
+            BottomBarBoton(
+                icono =  if (currentRoute == AppScreens.pastillasAdmin.route) R.drawable.pilliconfilled else R.drawable.pillicon,
+                navController = navController,
+                ruta = AppScreens.Pastillas.route,
+                modifier = Modifier.weight(1f),
+            )
+            BottomBarBoton(
+                icono =  if (currentRoute == AppScreens.citas.route) R.drawable.citasiconfilled else R.drawable.citasicon,
+                navController = navController,
+                ruta = AppScreens.citas.route,
+                modifier = Modifier.weight(1f),
+            )
+            BottomBarBoton(
+                icono =  if (currentRoute == AppScreens.contactos.route) R.drawable.contacticonfilled else R.drawable.contacticon,
+                navController = navController,
+                ruta = AppScreens.contactos.route,
+                modifier = Modifier.weight(1f),
+            )
+        }
+    }
+}
+
 
 @Composable
 fun BottomBarBoton(navController: NavController,
