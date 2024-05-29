@@ -82,6 +82,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.lopezzzcut.kleincare.BottomBar
+import com.lopezzzcut.kleincare.BottomBar2
 import com.lopezzzcut.kleincare.R
 import com.lopezzzcut.kleincare.TopBar
 import com.lopezzzcut.kleincare.TopBar2
@@ -136,7 +137,7 @@ fun ContactosFavoritosAdmin(navController: NavController, context: Context) {
         bottomBar = {
             Column {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                    BottomBar(navController = navController)
+                    BottomBar2(navController = navController)
                 }
                 Spacer(modifier = Modifier.height(32.dp))
             }
