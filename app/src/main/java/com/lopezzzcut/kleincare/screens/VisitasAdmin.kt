@@ -455,7 +455,8 @@ fun VisitasAdmincontent(navController: NavController,context: Context){
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xffE1CBA3)),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(12.dp)
+                    .padding(12.dp),
+                border = BorderStroke(1.dp, Color.Black)
             ) {
                 Text(
                     text = "Añadir visita",
@@ -570,57 +571,63 @@ fun ProximasCitasDetallesAdmin(imagen: Int, doctor: String, consulta: String,hor
 
 
             }
-                Column(verticalArrangement = Arrangement.Top, horizontalAlignment = Alignment.Start,modifier =Modifier.fillMaxHeight()) {
 
-                    IconButton(
-                        onClick = {
-                            editarVisita.value = true
-                        },
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .size(32.dp),
-                        content = {
-                            Image(
-                                painter = painterResource(id = R.drawable.editicon),
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .padding(8.dp)
-                                    .size(32.dp),
-                                contentScale = ContentScale.Fit
-                            )
-                        }
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                }
 
             }
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
+                Button(
+                    elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 7.dp),
+                    onClick = {
+                        abrirGoogleMaps(context, lugar)
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+                    modifier = Modifier
+                        .width(220.dp)
+                        .height(66.dp)
+                        .padding(8.dp),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = lugar,
+                            fontFamily = Poppins,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Normal,
+                            color = Color.Black,
+                            textAlign = TextAlign.Center, // Center text within the button
 
-            Button(
-                elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 7.dp),
-                onClick = {
-                    abrirGoogleMaps(context, lugar)
-                },
-                colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(60.dp)
-                    .padding(8.dp),
-                shape = RoundedCornerShape(8.dp)
-            ) {
-                Row(modifier = Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = lugar,
-                        fontFamily = Poppins,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Normal,
-                        color = Color.Black,
-                        textAlign = TextAlign.Center, // Center text within the button
 
+                        )
 
-                    )
+                    }
 
                 }
 
+                Button(
+                    onClick = {
+                        editarVisita.value = true
+                    },
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .size(58.dp),
+                    elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 7.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+
+                    shape = RoundedCornerShape(8.dp),
+                    content = {
+                        Image(
+                            painter = painterResource(id = R.drawable.editicon),
+                            contentDescription = "",
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            contentScale = ContentScale.Fit
+                        )
+                    }
+                )
             }
 
         }

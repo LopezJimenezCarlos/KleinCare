@@ -105,19 +105,19 @@ fun inicioadmincontent(navController: NavController){
             botonCard(
                 imagen = R.drawable.pillemoji,
                 texto = "Medicación",
-                ruta = AppScreens.Pastillas.route,
+                ruta = AppScreens.pastillasAdmin.route,
                 navController = navController
             )
             botonCard(
                 imagen = R.drawable.doctoraemoji,
                 texto = "Citas",
-                ruta = AppScreens.citas.route,
+                ruta = AppScreens.visitasAdmin.route,
                 navController = navController
             )
             botonCard(
                 imagen = R.drawable.phoneemoji,
                 texto = "Contactos",
-                ruta = AppScreens.contactos.route,
+                ruta = AppScreens.contactosAdmin.route,
                 navController = navController
             )
 
