@@ -50,7 +50,7 @@ fun splash() {
         verticalArrangement = Arrangement.Center
     ) {
         Image(
-            painter = painterResource(id = R.drawable.spalshicon),
+            painter = painterResource(id = R.drawable.logo),
             contentDescription = "Logo",
             modifier = Modifier.size(200.dp).clip(CircleShape)
         )

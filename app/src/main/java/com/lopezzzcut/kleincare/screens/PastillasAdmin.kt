@@ -47,6 +47,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -110,6 +111,7 @@ fun PastillasAdmin(navController: NavController,context: Context) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun pastillasadmincontent(navController: NavController){
+    var añadirPastillaNoche = remember { mutableStateOf(false) }
     var checked = remember { mutableStateOf(false) }
     var verDias by remember { mutableStateOf(true) }
     var icono = if (verDias) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown
@@ -117,6 +119,18 @@ fun pastillasadmincontent(navController: NavController){
     var nombrePastilla = remember { mutableStateOf("") }
     var cantidadPastilla = remember { mutableStateOf("") }
     var frecuenciaPastilla = remember { mutableStateOf("") }
+    val pastillasdia = remember {
+        mutableStateListOf(
+            Triple(R.drawable.ibuprofenoimagen, "Ibuprofeno", "1 pastilla cada 8 horas"),
+            Triple(R.drawable.paracetamolimagen, "Paracetamol", "1 pastilla cada 8 horas")
+        )
+    }
+    val pastillasnoche = remember {
+        mutableStateListOf(
+            Triple(R.drawable.lanoxin, "Lanoxin", "1 pastilla despues de cena"),
+            Triple(R.drawable.losartan, "Losartan", "1 pastilla cada 12 horas")
+        )
+    }
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -216,7 +230,7 @@ fun pastillasadmincontent(navController: NavController){
 
         }
         item {
-            ColumnaPastillas1Admin()
+            ColumnaPastillas1Admin(pastillasdia = pastillasdia)
         }
         item {
             Row(modifier = Modifier
@@ -243,7 +257,7 @@ fun pastillasadmincontent(navController: NavController){
                         .padding(start = 8.dp))
 
                 Spacer(modifier = Modifier.weight(1f))
-                IconButton(onClick = { añadirPastilla.value = true }) {
+                IconButton(onClick = { añadirPastillaNoche.value = true }) {
 
 
                     Image(
@@ -260,27 +274,26 @@ fun pastillasadmincontent(navController: NavController){
 
         }
         item {
-            ColumnaPastillas2Admin()
+            ColumnaPastillas2Admin(pastillasnoche = pastillasnoche)
         }
 
 
     }
     if (añadirPastilla.value) {
-        AñadirPastilla(nombrePastilla = nombrePastilla, cantidadPastilla = cantidadPastilla, frecuenciaPastilla = frecuenciaPastilla, añadirPastilla = añadirPastilla)
+        AñadirPastilla(nombrePastilla = nombrePastilla, cantidadPastilla = cantidadPastilla, añadirPastilla = añadirPastilla,pastillasdia = pastillasdia)
+    }
+    if (añadirPastillaNoche.value) {
+        AñadirPastillaNoche(nombrePastilla = nombrePastilla, cantidadPastilla = cantidadPastilla, añadirPastilla = añadirPastillaNoche,pastillasnoche = pastillasnoche)
     }
 }
 @Composable
-fun ColumnaPastillas2Admin() {
-    val pastillas = listOf(
+fun ColumnaPastillas2Admin(pastillasnoche : MutableList<Triple<Int, String, String>>) {
 
-        Triple(R.drawable.lanoxin, "Lanoxin", "1 pastilla despues de cena"),
-        Triple(R.drawable.losartan, "Losartan", "1 pastilla cada 12 horas")
-    )
 
     Column(modifier = Modifier.padding(8.dp)) {
-        pastillas.forEachIndexed { index, pastillas ->
+        pastillasnoche.forEachIndexed { index, pastilla ->
             cardPastillaAdmin(
-               pastillas,
+                pastillas = mutableListOf(pastilla),
                 mutableStateOf(true)
 
                 )
@@ -288,18 +301,17 @@ fun ColumnaPastillas2Admin() {
     }
 }
     @Composable
-fun ColumnaPastillas1Admin() {
-    val pastillas = listOf(
-        Triple(R.drawable.ibuprofenoimagen, "Ibuprofeno","1 pastilla cada 8 horas"),
-        Triple(R.drawable.paracetamolimagen, "Paracetamol","1 pastilla cada 8 horas"),
+fun ColumnaPastillas1Admin(pastillasdia: MutableList<Triple<Int, String, String>>) {
 
-        )
+
 
     Column(modifier = Modifier.padding(8.dp)) {
-        pastillas.forEachIndexed { index,pastillas ->
+        pastillasdia.forEachIndexed { index,pastilla ->
             cardPastillaAdmin(
-                pastillas = pastillas
-                ,mutableStateOf(false)
+                pastillas = mutableListOf(pastilla),
+                mutableStateOf(false),
+
+
                 )
         }
     }
@@ -307,10 +319,10 @@ fun ColumnaPastillas1Admin() {
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun cardPastillaAdmin(pastillas: Triple<Int, String, String>,tomada:MutableState<Boolean>){
-    val imagen = mutableStateOf(pastillas.first)
-    val pastilla =mutableStateOf( pastillas.second)
-    val descripcion = mutableStateOf(pastillas.third)
+fun cardPastillaAdmin(pastillas: MutableList<Triple<Int, String, String>>,tomada:MutableState<Boolean>){
+    val imagen = mutableStateOf(pastillas.first().first)
+    val pastilla = mutableStateOf(pastillas.first().second)
+    val descripcion = mutableStateOf(pastillas.first().third)
     var checked =  remember { mutableStateOf(false) }
     val colorBoton = if (checked.value) Color(0xffffc061) else Color.White
     val borde = if (tomada.value)  BorderStroke(1.dp, Color(0xff8ACB88))  else BorderStroke(1.dp, Color(0xffE17C7C))
@@ -407,7 +419,7 @@ fun cardPastillaAdmin(pastillas: Triple<Int, String, String>,tomada:MutableState
 
         }
         if (checked.value){
-           EditarPastilla(nombrePastilla = pastilla, frecuenciaPastilla = descripcion , editarPastilla = checked)
+           EditarPastilla(nombrePastilla = pastilla, frecuenciaPastilla = descripcion , editarPastilla = checked,pastillas)
         }
 
     }
@@ -415,7 +427,7 @@ fun cardPastillaAdmin(pastillas: Triple<Int, String, String>,tomada:MutableState
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AñadirPastilla(nombrePastilla: MutableState<String>, cantidadPastilla: MutableState<String>, frecuenciaPastilla: MutableState<String>, añadirPastilla: MutableState<Boolean>){
+fun AñadirPastilla(nombrePastilla: MutableState<String>, cantidadPastilla: MutableState<String>, añadirPastilla: MutableState<Boolean>,pastillasdia: MutableList<Triple<Int, String, String>>){
 
         AlertDialog(
             containerColor = Color(0xFFEBEBEB),
@@ -591,7 +603,9 @@ fun AñadirPastilla(nombrePastilla: MutableState<String>, cantidadPastilla: Muta
                                 .fillMaxWidth()
                         )
                         Button(
-                            onClick = { añadirPastilla.value = false }, shape = RoundedCornerShape(16.dp),
+                            onClick = {
+                                pastillasdia.add(Triple(R.drawable.ibuprofenoimagen, nombrePastilla.value, cantidadPastilla.value))
+                                añadirPastilla.value = false }, shape = RoundedCornerShape(16.dp),
                             colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -634,7 +648,229 @@ fun AñadirPastilla(nombrePastilla: MutableState<String>, cantidadPastilla: Muta
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditarPastilla(nombrePastilla: MutableState<String>, frecuenciaPastilla: MutableState<String>, editarPastilla: MutableState<Boolean>){
+fun AñadirPastillaNoche(nombrePastilla: MutableState<String>, cantidadPastilla: MutableState<String>, añadirPastilla: MutableState<Boolean>,pastillasnoche: MutableList<Triple<Int, String, String>>){
+
+    AlertDialog(
+        containerColor = Color(0xFFEBEBEB),
+        onDismissRequest = { /*TODO*/ },
+        confirmButton = { /*TODO*/ },
+        shape = RoundedCornerShape(16.dp),
+
+        title = {
+            var confirmar by remember { mutableStateOf(true) }
+            if (confirmar) {
+                Column(modifier = Modifier.fillMaxWidth(),) {
+                    Text(
+                        text = "Agregar medicación",
+                        fontFamily = Poppins,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = Color.Black,
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                    OutlinedTextField(
+
+                        value = nombrePastilla.value ,
+                        textStyle = TextStyle(
+                            fontFamily = Poppins,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Normal,
+                            color = Color.Black,
+                            textAlign = TextAlign.Start,
+                        ),
+                        onValueChange = { nombrePastilla.value  = it},
+                        placeholder = {
+                            Text(
+                                "Nombre", fontFamily = Poppins,
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Normal,
+                                color = Color.Black,
+                                textAlign = TextAlign.Start,
+                                modifier = Modifier.padding(8.dp)
+                            )
+                        },
+                        shape = RoundedCornerShape(16.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+
+                        )
+                    OutlinedTextField(
+                        value = cantidadPastilla.value ,
+                        textStyle = TextStyle(
+                            fontFamily = Poppins,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Normal,
+                            color = Color.Black,
+                            textAlign = TextAlign.Start,
+                        ),
+                        onValueChange = { cantidadPastilla.value  = it},
+                        placeholder = {
+                            Text(
+                                "Cantidad", fontFamily = Poppins,
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Normal,
+                                color = Color.Black,
+                                textAlign = TextAlign.Start,
+                                modifier = Modifier.padding(8.dp)
+                            )
+                        },
+                        shape = RoundedCornerShape(16.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+
+                        )
+
+                    OutlinedTextField(
+                        value = "",
+                        onValueChange = { },
+                        textStyle = TextStyle(
+                            fontFamily = Poppins,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Normal,
+                            color = Color.Black,
+                            textAlign = TextAlign.Start,
+                        ),
+                        placeholder = {
+                            Text(
+                                "Imagen", fontFamily = Poppins,
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Normal,
+                                color = Color.Black,
+                                textAlign = TextAlign.Start,
+                                modifier = Modifier.padding(8.dp)
+                            )
+                        },
+                        shape = RoundedCornerShape(16.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+                        trailingIcon = {
+                            IconButton(onClick = { /*TODO*/ }) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.cameraicon),
+                                    contentDescription = "Seleccionar imagen",
+                                    tint = Color.Black,
+                                    modifier = Modifier.size(24.dp)
+                                )
+                            }
+                        }
+                    )
+                    Button(
+                        onClick = { confirmar = false }, shape = RoundedCornerShape(16.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp)
+                    ) {
+                        Text(
+                            text = "Añadir",
+                            fontFamily = Poppins,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Normal,
+                            color = Color.White,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(8.dp)
+                        )
+
+                    }
+                    Button(
+                        onClick = { añadirPastilla.value  = false}, shape = RoundedCornerShape(16.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp),
+                        border = BorderStroke(1.dp, Color.Black)
+                    ) {
+                        Text(
+                            text = "Cancelar",
+                            fontFamily = Poppins,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Normal,
+                            color = Color.Black,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(8.dp)
+                        )
+
+                    }
+                }
+            } else {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "Agregar medicación",
+                        fontFamily = Poppins,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = Color.Black,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth()
+                    )
+                    Text(
+                        text = "¿Desea agregar la medicación?",
+                        fontFamily = Poppins,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = Color.Black,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .fillMaxWidth()
+                    )
+                    Button(
+                        onClick = {
+
+                            pastillasnoche.add(Triple(R.drawable.ibuprofenoimagen, nombrePastilla.value, cantidadPastilla.value))
+                            añadirPastilla.value = false }, shape = RoundedCornerShape(16.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp)
+                    ) {
+                        Text(
+                            text = "Confirmar",
+                            fontFamily = Poppins,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Normal,
+                            color = Color.White,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(8.dp)
+                        )
+
+                    }
+                    Button(
+                        onClick = { confirmar = true }, shape = RoundedCornerShape(16.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp),
+                        border = BorderStroke(1.dp, Color.Black)
+                    ) {
+                        Text(
+                            text = "Cancelar",
+                            fontFamily = Poppins,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Normal,
+                            color = Color.Black,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(8.dp)
+                        )
+
+                    }
+                }
+            }
+        },
+    )
+}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun EditarPastilla(nombrePastilla: MutableState<String>, frecuenciaPastilla: MutableState<String>, editarPastilla: MutableState<Boolean>,pastillas: MutableList<Triple<Int, String, String>>){
 
     AlertDialog(
         containerColor = Color(0xFFEBEBEB),
@@ -646,7 +882,7 @@ fun EditarPastilla(nombrePastilla: MutableState<String>, frecuenciaPastilla: Mut
             if (confirmar) {
                 Column(modifier = Modifier.fillMaxWidth(),) {
                     Text(
-                        text = "Agregar medicación",
+                        text = "Editar medicación",
                         fontFamily = Poppins,
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Normal,
@@ -787,7 +1023,7 @@ fun EditarPastilla(nombrePastilla: MutableState<String>, frecuenciaPastilla: Mut
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "Agregar medicación",
+                        text = "Editar medicación",
                         fontFamily = Poppins,
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Normal,
@@ -798,7 +1034,7 @@ fun EditarPastilla(nombrePastilla: MutableState<String>, frecuenciaPastilla: Mut
                             .fillMaxWidth()
                     )
                     Text(
-                        text = "¿Desea agregar la medicación?",
+                        text = "¿Desea editar la medicación?",
                         fontFamily = Poppins,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Normal,
@@ -809,7 +1045,11 @@ fun EditarPastilla(nombrePastilla: MutableState<String>, frecuenciaPastilla: Mut
                             .fillMaxWidth()
                     )
                     Button(
-                        onClick = { editarPastilla.value = false }, shape = RoundedCornerShape(16.dp),
+                        onClick =
+                        {
+                            pastillas.removeAt(pastillas.indexOfFirst { it.second == nombrePastilla.value })
+                            pastillas.add(Triple(R.drawable.ibuprofenoimagen, nombrePastilla.value, frecuenciaPastilla.value))
+                            editarPastilla.value = false }, shape = RoundedCornerShape(16.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
                         modifier = Modifier
                             .fillMaxWidth()

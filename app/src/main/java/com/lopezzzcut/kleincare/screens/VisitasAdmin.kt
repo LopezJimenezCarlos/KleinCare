@@ -56,6 +56,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -121,7 +122,10 @@ fun VisitasAdmin(navController: NavController,context: Context) {
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AñadirVisita(nombreDoctor: MutableState<String>, tipo: MutableState<String>, fecha: MutableState<String>, añadirVisita: MutableState<Boolean>) {
+fun AñadirVisita(nombreDoctor: MutableState<String>, tipo: MutableState<String>, dia: MutableState<String>, hora: MutableState<String>, añadirVisita: MutableState<Boolean>,
+                 onAddCita: (Cita) -> Unit,
+                lugar: MutableState<String>
+) {
 
     AlertDialog(
         containerColor = Color(0xFFEBEBEB),
@@ -196,7 +200,7 @@ fun AñadirVisita(nombreDoctor: MutableState<String>, tipo: MutableState<String>
 
                         )
                     OutlinedTextField(
-                        value = fecha.value,
+                        value = dia.value,
                         textStyle = androidx.compose.ui.text.TextStyle(
                             fontFamily = Poppins,
                             fontSize = 14.sp,
@@ -204,10 +208,10 @@ fun AñadirVisita(nombreDoctor: MutableState<String>, tipo: MutableState<String>
                             color = Color.Black,
                             textAlign = TextAlign.Start,
                         ),
-                        onValueChange = { fecha.value = it },
+                        onValueChange = { dia.value = it },
                         placeholder = {
                             Text(
-                                "Fecha y hora", fontFamily = Poppins,
+                                "Fecha", fontFamily = Poppins,
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Normal,
                                 color = Color.Black,
@@ -221,6 +225,59 @@ fun AñadirVisita(nombreDoctor: MutableState<String>, tipo: MutableState<String>
                             .padding(8.dp),
 
                         )
+                    OutlinedTextField(
+                        value = hora.value,
+                        textStyle = androidx.compose.ui.text.TextStyle(
+                            fontFamily = Poppins,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Normal,
+                            color = Color.Black,
+                            textAlign = TextAlign.Start,
+                        ),
+                        onValueChange = { hora.value = it },
+                        placeholder = {
+                            Text(
+                                "Hora", fontFamily = Poppins,
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Normal,
+                                color = Color.Black,
+                                textAlign = TextAlign.Start,
+                                modifier = Modifier.padding(8.dp)
+                            )
+                        },
+                        shape = RoundedCornerShape(16.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+
+                        )
+                    OutlinedTextField(
+                        value = lugar.value,
+                        textStyle = androidx.compose.ui.text.TextStyle(
+                            fontFamily = Poppins,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Normal,
+                            color = Color.Black,
+                            textAlign = TextAlign.Start,
+                        ),
+                        onValueChange = { lugar.value = it },
+                        placeholder = {
+                            Text(
+                                "Lugar", fontFamily = Poppins,
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Normal,
+                                color = Color.Black,
+                                textAlign = TextAlign.Start,
+                                modifier = Modifier.padding(8.dp)
+                            )
+                        },
+                        shape = RoundedCornerShape(16.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+
+                        )
+
 
                     OutlinedTextField(
                         value = "",
@@ -324,7 +381,18 @@ fun AñadirVisita(nombreDoctor: MutableState<String>, tipo: MutableState<String>
                             .fillMaxWidth()
                     )
                     Button(
-                        onClick = { añadirVisita.value = false },
+                        onClick = { añadirVisita.value = false
+                                val nuevaCita = Cita(
+                                    dia = dia.value.toInt(), // Usa un valor predeterminado para dia
+                                    imagen = R.drawable.doctorejemplo1,  // Usa una imagen predeterminada
+                                    doctor = nombreDoctor.value,
+                                    consulta = tipo.value,
+                                    hora = hora.value,
+                                    lugar = lugar.value // Usa un valor predeterminado para lugar
+                                )
+                            onAddCita(nuevaCita)
+                            confirmar = false
+                            añadirVisita.value = false},
                         shape = RoundedCornerShape(16.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
                         modifier = Modifier
@@ -343,7 +411,8 @@ fun AñadirVisita(nombreDoctor: MutableState<String>, tipo: MutableState<String>
 
                     }
                     Button(
-                        onClick = { confirmar = true }, shape = RoundedCornerShape(16.dp),
+                        onClick = { confirmar = true
+                                  }, shape = RoundedCornerShape(16.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
                         modifier = Modifier
                             .fillMaxWidth()
@@ -366,21 +435,27 @@ fun AñadirVisita(nombreDoctor: MutableState<String>, tipo: MutableState<String>
         },
     )
 }
+@SuppressLint("RememberReturnType")
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun VisitasAdmincontent(navController: NavController,context: Context){
     var nombreDoctor = remember { mutableStateOf("") }
     var tipo = remember { mutableStateOf("") }
-    var fecha = remember { mutableStateOf("") }
+    var hora = remember { mutableStateOf("") }
     var añadirVisita = remember { mutableStateOf(false) }
-    val citas = listOf(
+    var lugar = remember { mutableStateOf("") }
+    var dia = remember { mutableStateOf("") }
+    val citas =  remember { mutableStateListOf(
         Cita(2, R.drawable.doctorejemplo1, "Dr. Smith", "Consulta general", "10:00", "Hospital Central"),
         Cita(6, R.drawable.doctoraejemplo2, "Dra. Johnson", "Consulta pediátrica", "11:00", "Clínica Salud"),
         // Añade más citas aquí
         Cita(10, R.drawable.doctorejemplo3, "Dr. Jimenez", "Consulta de especialidad", "17:00", "Clínica de Fisioterapia Villaviciosa"),
         Cita(14, R.drawable.doctoraejemplo2, "Dra. Johnson", "Consulta de especialidad", "11:00", "Clínica Salud"),
         Cita(18, R.drawable.doctorejemplo1, "Dr. Smith", "Consulta de urgencia", "9:40", "Hospital Central"),
-    )
+    )}
+    fun addCita(cita: Cita) {
+        citas.add(cita)
+    }
     var selectedCita by remember { mutableStateOf<Cita?>(citas.firstOrNull()) }
 
     var verDias by remember { mutableStateOf(true) }
@@ -444,7 +519,8 @@ fun VisitasAdmincontent(navController: NavController,context: Context){
                     consulta = it.consulta,
                     hora = it.hora,
                     lugar = it.lugar,
-                    context = context
+                    context = context,
+                    citas = citas
                 )
             }
         }
@@ -472,7 +548,7 @@ fun VisitasAdmincontent(navController: NavController,context: Context){
         }
         item {
             if (añadirVisita.value) {
-                AñadirVisita(nombreDoctor = nombreDoctor, tipo = tipo, fecha = fecha, añadirVisita = añadirVisita)
+                AñadirVisita(nombreDoctor = nombreDoctor, tipo = tipo, dia = dia,hora= hora, añadirVisita = añadirVisita, lugar = lugar, onAddCita = ::addCita)
             }
         }
 
@@ -488,7 +564,7 @@ fun VisitasAdmincontent(navController: NavController,context: Context){
 
 @SuppressLint("QueryPermissionsNeeded")
 @Composable
-fun ProximasCitasDetallesAdmin(imagen: Int, doctor: String, consulta: String,hora: String,lugar: String,context: Context )  {
+fun ProximasCitasDetallesAdmin(imagen: Int, doctor: String, consulta: String,hora: String,lugar: String,context: Context,citas:MutableList<Cita>)   {
     var editarVisita = remember { mutableStateOf(false) }
     var doctorMutable = remember { mutableStateOf(doctor) }
     var tipoMutable = remember { mutableStateOf(consulta) }
@@ -499,7 +575,7 @@ fun ProximasCitasDetallesAdmin(imagen: Int, doctor: String, consulta: String,hor
             "Dr. Smith" -> Color(0xfff7f1e1)
             "Dra. Johnson" -> Color(0xffeff5e9)
             "Dr. Jimenez" -> Color(0xffefe4e0)
-            else -> Color(0xffFFC061)
+            else -> Color(0xffECD2AB)
         }
     Card(
         shape = RoundedCornerShape(16.dp),
@@ -632,7 +708,19 @@ fun ProximasCitasDetallesAdmin(imagen: Int, doctor: String, consulta: String,hor
 
         }
         if (editarVisita.value) {
-            EditarVisita(doctor = doctorMutable, tipo = tipoMutable, hora = horaMutable, lugar = lugarMutable, editarVisita = editarVisita)
+            EditarVisita(doctor = doctorMutable, tipo = tipoMutable, hora = horaMutable, lugar = lugarMutable, editarVisita = editarVisita, onEditCita = {
+                val nuevaCita = Cita(
+                    dia = it.dia,
+                    imagen = it.imagen,
+                    doctor = doctorMutable.value,
+                    consulta = tipoMutable.value,
+                    hora = horaMutable.value,
+                    lugar = lugarMutable.value
+                )
+                citas.remove(it)
+                citas.add(nuevaCita)
+            }
+            )
         }
     }
 
@@ -645,6 +733,7 @@ fun EditarVisita(doctor: MutableState<String>,
                  hora:MutableState<String>,
                  lugar: MutableState<String>,
                  editarVisita: MutableState<Boolean>,
+                 onEditCita: (Cita) -> Unit
                 ){
 
     AlertDialog(
@@ -747,7 +836,7 @@ fun EditarVisita(doctor: MutableState<String>,
 
                     OutlinedTextField(
                         value = hora.value,
-                        onValueChange = { hora.value },
+                        onValueChange = { hora.value = it },
                         textStyle = androidx.compose.ui.text.TextStyle(
                             fontFamily = Poppins,
                             fontSize = 14.sp,
@@ -799,7 +888,8 @@ fun EditarVisita(doctor: MutableState<String>,
 
                     }
                     Button(
-                        onClick = { editarVisita.value  = false}, shape = RoundedCornerShape(16.dp),
+                        onClick = {
+                            editarVisita.value  = false}, shape = RoundedCornerShape(16.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
                         modifier = Modifier
                             .fillMaxWidth()
@@ -846,7 +936,9 @@ fun EditarVisita(doctor: MutableState<String>,
                             .fillMaxWidth()
                     )
                     Button(
-                        onClick = { editarVisita.value = false }, shape = RoundedCornerShape(16.dp),
+                        onClick = {
+                            onEditCita( Cita(2, R.drawable.doctorejemplo1, doctor.value, tipo.value, hora.value, lugar.value))
+                            editarVisita.value = false }, shape = RoundedCornerShape(16.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
                         modifier = Modifier
                             .fillMaxWidth()

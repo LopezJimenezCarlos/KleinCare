@@ -58,6 +58,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -180,12 +181,13 @@ data class Numero(
 
 
 fun getContactos(): List<Numero> {
-    return listOf(
+    return mutableListOf(
         Numero("Maria Jose", "123456789", R.drawable.personajoven1),
         Numero("Hija Silvia", "987654321", R.drawable.personajoven3),
         Numero("Nieto Alfonso", "123456789", R.drawable.personajoven2)
         // Añade más contactos aquí
     )
+
 }
 
 
