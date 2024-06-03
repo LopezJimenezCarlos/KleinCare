@@ -1,6 +1,8 @@
 package com.lopezzzcut.kleincare.screens
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -23,6 +25,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -68,6 +71,21 @@ fun Inicio(navController: NavController,context: Context) {
                 TopBar(navController = navController, name = "Jesus Hernandez Parreno")
             }
                     },
+        floatingActionButton = {
+            FloatingActionButton(
+                shape = CircleShape,
+                containerColor = Color(0xfff1e5d7),
+                onClick = {   val intent = Intent(Intent.ACTION_DIAL)
+                    intent.data = Uri.parse("tel:$112")
+                    context.startActivity(intent)}) {
+                Image(
+                    painter = painterResource(id = R.drawable.alert),
+                    contentDescription = "Icono de añadir",
+                    modifier = Modifier.size(80.dp),
+                )
+            }
+
+        },
         bottomBar= {
             Column {
 
